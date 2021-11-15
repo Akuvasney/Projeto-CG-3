@@ -45,9 +45,8 @@ void Rightwall::paintGL() {
       model = glm::translate(model, glm::vec3(0.0f, y, z));
       abcg::glUniformMatrix4fv(m_modelMatrixLoc, 1, GL_FALSE, &model[0][0]);
 
-      // Set color (checkerboard pattern)
-      const float gray{(z + y) % 2 == 0 ? 1.0f : 0.5f};
-      abcg::glUniform4f(m_colorLoc, gray, gray, gray, 1.0f);
+      // Set color 
+      abcg::glUniform4f(m_colorLoc, 0.67f, 0.13f, 0.13f, 1.0f);
 
       abcg::glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     }
