@@ -66,7 +66,7 @@ void OpenGLWindow::handleEvent(SDL_Event& ev) {
 }
 
 void OpenGLWindow::initializeGL() {
-
+  SDL_SetRelativeMouseMode(SDL_TRUE);
   abcg::glClearColor(0, 0, 0, 1);
 
   // Enable depth buffering
@@ -178,8 +178,8 @@ void OpenGLWindow::loadModelFromFile(std::string_view path) {
 }
 
 void OpenGLWindow::paintGL() {
-  SDL_ShowCursor(SDL_DISABLE);
-  SDL_SetRelativeMouseMode(SDL_TRUE);
+  
+  
   update();
 
   // Clear color buffer and depth buffer

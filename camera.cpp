@@ -41,7 +41,7 @@ void Camera::pan(float speed, int direction) {
   glm::vec3 axis;
 
   // Rotate camera around its local y axis
-  transform = glm::translate(transform, -m_eye);
+  transform = glm::translate(transform, m_eye);
   m_at = transform * glm::vec4(m_at, 1.0f);
   if(direction){
     axis = glm::cross(glm::vec3(m_at), glm::vec3(0,1,0));
@@ -50,7 +50,7 @@ void Camera::pan(float speed, int direction) {
   }
   transform = glm::rotate(transform, -speed, axis);
   m_at = transform * glm::vec4(m_at, 1.0f);
-  transform = glm::translate(transform, m_eye);
+  transform = glm::translate(transform, -m_eye);
   m_at = transform * glm::vec4(m_at, 1.0f);
 
   
