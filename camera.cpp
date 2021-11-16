@@ -14,7 +14,8 @@ void Camera::computeViewMatrix() {
 
 void Camera::dolly(float speed) {
   // Compute forward vector (view direction)
-  const glm::vec3 forward{glm::normalize(m_at - m_eye)};
+  glm::vec3 forward{glm::normalize(m_at - m_eye)};
+  forward.y = 0;
 
   // Move eye and center forward (speed > 0) or backward (speed < 0)
   m_eye += forward * speed;
@@ -25,7 +26,8 @@ void Camera::dolly(float speed) {
 
 void Camera::truck(float speed) {
   // Compute forward vector (view direction)
-  const glm::vec3 forward{glm::normalize(m_at - m_eye)};
+  glm::vec3 forward{glm::normalize(m_at - m_eye)};
+  forward.y = 0;
   // Compute vector to the left
   const glm::vec3 left{glm::cross(m_up, forward)};
 
