@@ -36,15 +36,24 @@ void Camera::truck(float speed) {
   computeViewMatrix();
 }
 
-void Camera::pan(float speed) {
+void Camera::pan(float speed, int direction) {
   glm::mat4 transform{glm::mat4(1.0f)};
+  glm::vec3 axis;
 
   // Rotate camera around its local y axis
-  transform = glm::translate(transform, m_eye);
-  transform = glm::rotate(transform, -speed, m_up);
   transform = glm::translate(transform, -m_eye);
-
   m_at = transform * glm::vec4(m_at, 1.0f);
+  if(direction){
+    axis = glm::cross(glm::vec3(m_at), glm::vec3(0,1,0));
+  }else{
+    axis = m_up;
+  }
+  transform = glm::rotate(transform, -speed, axis);
+  m_at = transform * glm::vec4(m_at, 1.0f);
+  transform = glm::translate(transform, m_eye);
+  m_at = transform * glm::vec4(m_at, 1.0f);
+
+  
 
   computeViewMatrix();
 }

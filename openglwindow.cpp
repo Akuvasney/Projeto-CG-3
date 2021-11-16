@@ -11,13 +11,13 @@
 
 // Explicit specialization of std::hash for Vertex
 namespace std {
-template <>
-struct hash<Vertex> {
-  size_t operator()(Vertex const& vertex) const noexcept {
-    const std::size_t h1{std::hash<glm::vec3>()(vertex.position)};
-    return h1;
-  }
-};
+  template <>
+  struct hash<Vertex> {
+    size_t operator()(Vertex const& vertex) const noexcept {
+      const std::size_t h1{std::hash<glm::vec3>()(vertex.position)};
+      return h1;
+    }
+  };
 }  // namespace std
 
 void OpenGLWindow::handleEvent(SDL_Event& ev) {
@@ -27,11 +27,9 @@ void OpenGLWindow::handleEvent(SDL_Event& ev) {
     if (ev.key.keysym.sym == SDLK_DOWN || ev.key.keysym.sym == SDLK_s)
       m_dollySpeed = -1.0f;
     if (ev.key.keysym.sym == SDLK_LEFT || ev.key.keysym.sym == SDLK_a)
-      m_panSpeed = -1.0f;
+      m_truckSpeed = -1.0f;
     if (ev.key.keysym.sym == SDLK_RIGHT || ev.key.keysym.sym == SDLK_d)
-      m_panSpeed = 1.0f;
-    if (ev.key.keysym.sym == SDLK_q) m_truckSpeed = -1.0f;
-    if (ev.key.keysym.sym == SDLK_e) m_truckSpeed = 1.0f;
+      m_truckSpeed = 1.0f;
   }
   if (ev.type == SDL_KEYUP) {
     if ((ev.key.keysym.sym == SDLK_UP || ev.key.keysym.sym == SDLK_w) &&
@@ -41,17 +39,34 @@ void OpenGLWindow::handleEvent(SDL_Event& ev) {
         m_dollySpeed < 0)
       m_dollySpeed = 0.0f;
     if ((ev.key.keysym.sym == SDLK_LEFT || ev.key.keysym.sym == SDLK_a) &&
-        m_panSpeed < 0)
-      m_panSpeed = 0.0f;
+        m_truckSpeed < 0)
+      m_truckSpeed = 0.0f;
     if ((ev.key.keysym.sym == SDLK_RIGHT || ev.key.keysym.sym == SDLK_d) &&
-        m_panSpeed > 0)
-      m_panSpeed = 0.0f;
-    if (ev.key.keysym.sym == SDLK_q && m_truckSpeed < 0) m_truckSpeed = 0.0f;
-    if (ev.key.keysym.sym == SDLK_e && m_truckSpeed > 0) m_truckSpeed = 0.0f;
+        m_truckSpeed > 0)
+      m_truckSpeed = 0.0f;
+  }
+
+  if (ev.type == SDL_MOUSEMOTION) {
+    const float deltaTime{static_cast<float>(getDeltaTime())};
+
+    float velocity_up;
+    float velocity_right;
+
+    velocity_up = 0.5f*((float)ev.motion.yrel);
+    velocity_right = 0.5f*((float)ev.motion.xrel);
+
+    m_camera.pan(velocity_up*deltaTime, 1);
+    m_camera.pan(velocity_right*deltaTime, 0);
+
+    
+    
+    
+
   }
 }
 
 void OpenGLWindow::initializeGL() {
+
   abcg::glClearColor(0, 0, 0, 1);
 
   // Enable depth buffering
@@ -141,7 +156,7 @@ void OpenGLWindow::loadModelFromFile(std::string_view path) {
       const tinyobj::index_t index{shape.mesh.indices.at(offset)};
 
       // Vertex position
-      const int startIndex{3 * index.vertex_index};
+      const std::size_t startIndex{static_cast<size_t>(3 * index.vertex_index)};
       const float vx{attrib.vertices.at(startIndex + 0)};
       const float vy{attrib.vertices.at(startIndex + 1)};
       const float vz{attrib.vertices.at(startIndex + 2)};
@@ -163,6 +178,8 @@ void OpenGLWindow::loadModelFromFile(std::string_view path) {
 }
 
 void OpenGLWindow::paintGL() {
+  SDL_ShowCursor(SDL_DISABLE);
+  SDL_SetRelativeMouseMode(SDL_TRUE);
   update();
 
   // Clear color buffer and depth buffer
@@ -190,7 +207,7 @@ void OpenGLWindow::paintGL() {
 
   abcg::glBindVertexArray(m_VAO);
 
-  // Draw white bunny
+ // Draw white bunny
   glm::mat4 model{1.0f};
   model = glm::translate(model, glm::vec3(-2.0f, 0.0f, -1.8f));
   model = glm::rotate(model, glm::radians(270.0f), glm::vec3(1, 0, 0));
@@ -273,7 +290,6 @@ void OpenGLWindow::terminateGL() {
   m_rightwall.terminateGL();
   m_backwall.terminateGL();
   m_frontwall.terminateGL();
-  
 
   abcg::glDeleteProgram(m_program);
   abcg::glDeleteBuffers(1, &m_EBO);
@@ -287,5 +303,4 @@ void OpenGLWindow::update() {
   // Update LookAt camera
   m_camera.dolly(m_dollySpeed * deltaTime);
   m_camera.truck(m_truckSpeed * deltaTime);
-  m_camera.pan(m_panSpeed * deltaTime);
 }
