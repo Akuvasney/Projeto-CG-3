@@ -58,15 +58,11 @@ void OpenGLWindow::handleEvent(SDL_Event& ev) {
     m_camera.pan(velocity_up*deltaTime, 1);
     m_camera.pan(velocity_right*deltaTime, 0);
 
-    
-    
-    
-
   }
 }
 
 void OpenGLWindow::initializeGL() {
-  SDL_SetRelativeMouseMode(SDL_TRUE);
+
   abcg::glClearColor(0, 0, 0, 1);
 
   // Enable depth buffering
@@ -178,8 +174,8 @@ void OpenGLWindow::loadModelFromFile(std::string_view path) {
 }
 
 void OpenGLWindow::paintGL() {
-  
-  
+  SDL_ShowCursor(SDL_DISABLE);
+  SDL_SetRelativeMouseMode(SDL_TRUE);
   update();
 
   // Clear color buffer and depth buffer
