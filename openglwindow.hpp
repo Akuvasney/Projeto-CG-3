@@ -11,14 +11,8 @@
 #include "right_wall.hpp"
 #include "back_wall.hpp"
 #include "front_wall.hpp"
+#include "model.hpp"
 
-struct Vertex {
-  glm::vec3 position;
-
-  bool operator==(const Vertex& other) const {
-    return position == other.position;
-  }
-};
 
 class OpenGLWindow : public abcg::OpenGLWindow {
  protected:
@@ -50,6 +44,7 @@ class OpenGLWindow : public abcg::OpenGLWindow {
   Rightwall m_rightwall;
   Backwall m_backwall;
   Frontwall m_frontwall;
+  Model m_lamp;
 
   std::vector<Vertex> m_vertices;
   std::vector<GLuint> m_indices;
