@@ -63,7 +63,13 @@ void OpenGLWindow::initializeGL() {
   m_program = createProgramFromFile(getAssetsPath() + "lookat.vert",
                                     getAssetsPath() + "lookat.frag");
 
-  m_lamp.initializeGL(m_program, getAssetsPath() + "lamp.obj");
+  m_lamp1.initializeGL(m_program, getAssetsPath() + "lamp.obj");
+  m_lamp2.initializeGL(m_program, getAssetsPath() + "lamp.obj");
+  m_lamp3.initializeGL(m_program, getAssetsPath() + "lamp.obj");
+  m_lamp4.initializeGL(m_program, getAssetsPath() + "lamp.obj");
+  m_couch.initializeGL(m_program, getAssetsPath() + "sofa.obj");
+  m_table.initializeGL(m_program, getAssetsPath() + "CoffeeTable.obj");
+  m_tv.initializeGL(m_program, getAssetsPath() + "TV.obj");
 
   m_ground.initializeGL(m_program);
   m_roof.initializeGL(m_program);
@@ -118,7 +124,19 @@ void OpenGLWindow::paintGL() {
   m_frontwall.paintGL();
 
   // draw lamps
-  m_lamp.paintGL(270.0f, glm::vec3(1, 0, 0), glm::vec3(-2.0f, 0.0f, -1.8f), 0.006f, glm::vec4(1.0f, 0.8f, 0.0f, 1.0f));
+  m_lamp1.paintGL(270.0f, glm::vec3(1, 0, 0), glm::vec3(-2.0f, 0.0f, -1.8f), 0.006f, glm::vec4(1.0f, 0.8f, 0.0f, 1.0f));
+  m_lamp2.paintGL(270.0f, glm::vec3(1, 0, 0), glm::vec3(-2.0f, 0.0f, 1.8f), 0.006f, glm::vec4(1.0f, 0.8f, 0.0f, 1.0f));
+  m_lamp3.paintGL(270.0f, glm::vec3(1, 0, 0), glm::vec3(1.7f, 0.0f, -1.8f), 0.006f, glm::vec4(1.0f, 0.8f, 0.0f, 1.0f));
+  m_lamp4.paintGL(270.0f, glm::vec3(1, 0, 0), glm::vec3(1.7f, 0.0f, 1.8f), 0.006f, glm::vec4(1.0f, 0.8f, 0.0f, 1.0f));
+
+  // draw couch
+  m_couch.paintGL(270.0f, glm::vec3(1, 0, 0), glm::vec3(0.0f, 0.2f, -1.8f), 0.006f, glm::vec4(0.45f, 0.5f, 0.55f, 1.0f));
+
+  // draw table
+  m_table.paintGL(90.0f, glm::vec3(0, 1, 0), glm::vec3(0.0f, 0.14f, -0.2f), 0.28f, glm::vec4(0.54f, 0.26f, 0.074f, 1.0f));
+
+  // draw tv
+  m_tv.paintGL(90.0f, glm::vec3(0, 1, 0), glm::vec3(-0.2f, 0.3f, -0.0f), 0.1f, glm::vec4(0.0f, 0.26f, 0.074f, 1.0f));
 
   abcg::glUseProgram(0);
 }
@@ -139,7 +157,13 @@ void OpenGLWindow::terminateGL() {
   m_rightwall.terminateGL();
   m_backwall.terminateGL();
   m_frontwall.terminateGL();
-  m_lamp.terminateGL();
+  m_lamp1.terminateGL();
+  m_lamp2.terminateGL();
+  m_lamp3.terminateGL();
+  m_lamp4.terminateGL();
+  m_couch.terminateGL();
+  m_table.terminateGL();
+  m_tv.terminateGL();
 
   abcg::glDeleteProgram(m_program);
   abcg::glDeleteBuffers(1, &m_EBO);

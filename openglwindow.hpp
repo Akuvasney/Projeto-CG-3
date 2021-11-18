@@ -44,7 +44,13 @@ class OpenGLWindow : public abcg::OpenGLWindow {
   Rightwall m_rightwall;
   Backwall m_backwall;
   Frontwall m_frontwall;
-  Model m_lamp;
+  Model m_lamp1;
+  Model m_lamp2;
+  Model m_lamp3;
+  Model m_lamp4;
+  Model m_couch;
+  Model m_table;
+  Model m_tv;
 
   std::vector<Vertex> m_vertices;
   std::vector<GLuint> m_indices;
