@@ -144,7 +144,8 @@ void OpenGLWindow::paintGL() {
   m_rug.paintGL(90.0f, glm::vec3(1, 0, 0), glm::vec3(-0.0f, 0.002f, -0.9f), 0.009f, glm::vec4(0.67f, 0.13f, 0.13f, 1.0f));
 
   //draw slender
-  m_slender.paintGL(0.0f, glm::vec3(1, 0, 0), glm::vec3(-0.0f, 0.8f, -0.9f), 0.003f, glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
+  m_slender.paintGL(0.0f, glm::vec3(1, 0, 0), glm::vec3(-0.0f, 0.82f, -0.9f), 0.0025f, glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
+
 
   abcg::glUseProgram(0);
 }
