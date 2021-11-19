@@ -29,6 +29,9 @@ class Model {
 
   std::vector<Vertex> m_vertices;
   std::vector<GLuint> m_indices;
+
+  glm::vec3 m_position{0,0,0};
 };
+
 
 #endif

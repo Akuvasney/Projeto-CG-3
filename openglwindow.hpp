@@ -51,7 +51,9 @@ class OpenGLWindow : public abcg::OpenGLWindow {
   Model m_couch;
   Model m_table;
   Model m_tv;
-
+  Model m_rug;
+  Model m_slender;
+  
   std::vector<Vertex> m_vertices;
   std::vector<GLuint> m_indices;
 

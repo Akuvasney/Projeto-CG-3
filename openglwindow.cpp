@@ -70,6 +70,8 @@ void OpenGLWindow::initializeGL() {
   m_couch.initializeGL(m_program, getAssetsPath() + "sofa.obj");
   m_table.initializeGL(m_program, getAssetsPath() + "CoffeeTable.obj");
   m_tv.initializeGL(m_program, getAssetsPath() + "TV.obj");
+  m_rug.initializeGL(m_program, getAssetsPath() + "rug.obj");
+  m_slender.initializeGL(m_program, getAssetsPath() + "Slenderman Model.obj");
 
   m_ground.initializeGL(m_program);
   m_roof.initializeGL(m_program);
@@ -136,7 +138,13 @@ void OpenGLWindow::paintGL() {
   m_table.paintGL(90.0f, glm::vec3(0, 1, 0), glm::vec3(0.0f, 0.14f, -0.2f), 0.28f, glm::vec4(0.54f, 0.26f, 0.074f, 1.0f));
 
   // draw tv
-  m_tv.paintGL(90.0f, glm::vec3(0, 1, 0), glm::vec3(-0.2f, 0.3f, -0.0f), 0.1f, glm::vec4(0.0f, 0.26f, 0.074f, 1.0f));
+  m_tv.paintGL(90.0f, glm::vec3(0, 1, 0), glm::vec3(-0.2f, 0.3f, -0.0f), 0.1f, glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
+
+  //draw rug
+  m_rug.paintGL(90.0f, glm::vec3(1, 0, 0), glm::vec3(-0.0f, 0.002f, -0.9f), 0.009f, glm::vec4(0.67f, 0.13f, 0.13f, 1.0f));
+
+  //draw slender
+  m_slender.paintGL(0.0f, glm::vec3(1, 0, 0), glm::vec3(-0.0f, 0.8f, -0.9f), 0.003f, glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
 
   abcg::glUseProgram(0);
 }
@@ -164,6 +172,8 @@ void OpenGLWindow::terminateGL() {
   m_couch.terminateGL();
   m_table.terminateGL();
   m_tv.terminateGL();
+  m_rug.terminateGL();
+  m_slender.terminateGL();
 
   abcg::glDeleteProgram(m_program);
   abcg::glDeleteBuffers(1, &m_EBO);

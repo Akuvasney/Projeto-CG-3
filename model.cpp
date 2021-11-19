@@ -118,12 +118,13 @@ void Model::loadModelFromFile(std::string_view path) {
 }
 
 void Model::paintGL(float angle, glm::vec3 axis, glm::vec3 position, float scale_size, glm::vec4 color) {
-  
+  m_position = position;
+
   abcg::glBindVertexArray(m_VAO);
 
  // Draw white bunny
   glm::mat4 model{1.0f};
-  model = glm::translate(model, position);
+  model = glm::translate(model, m_position);
   model = glm::rotate(model, glm::radians(angle), axis);
   model = glm::scale(model, glm::vec3(scale_size));
 
