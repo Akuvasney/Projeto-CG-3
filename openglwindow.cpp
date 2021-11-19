@@ -75,10 +75,10 @@ void OpenGLWindow::initializeGL() {
 
   m_ground.initializeGL(m_program);
   m_roof.initializeGL(m_program);
-  m_leftwall.initializeGL(m_program);
-  m_rightwall.initializeGL(m_program);
-  m_backwall.initializeGL(m_program);
-  m_frontwall.initializeGL(m_program);
+  m_leftwall.initializeGL(m_program, getAssetsPath() + "wall.obj");
+  m_rightwall.initializeGL(m_program, getAssetsPath() + "wall.obj");
+  m_backwall.initializeGL(m_program, getAssetsPath() + "wall.obj");
+  m_frontwall.initializeGL(m_program, getAssetsPath() + "wall.obj");
 }
 
 void OpenGLWindow::paintGL() {
@@ -114,16 +114,16 @@ void OpenGLWindow::paintGL() {
   m_roof.paintGL();
 
     // Draw left wall
-  m_leftwall.paintGL();
+  m_leftwall.paintGL(90.0f, glm::vec3(0, 1, 0), glm::vec3(-2.0f, 0.0f, 2.0f), 1.5f, glm::vec4(0.67f, 0.13f, 0.13f, 1.0f));
 
     // Draw right wall
-  m_rightwall.paintGL();
+  m_rightwall.paintGL(90.0f, glm::vec3(0, 1, 0), glm::vec3(2.0f, 0.0f, 2.0f), 1.5f, glm::vec4(0.67f, 0.13f, 0.13f, 1.0f));
 
     // draw Back wall
-  m_backwall.paintGL();
+  m_backwall.paintGL(0.0f, glm::vec3(1, 0, 0), glm::vec3(-2.0f, 0.0f, 2.0f), 1.5f, glm::vec4(0.67f, 0.13f, 0.13f, 1.0f));
   
   // draw front wall
-  m_frontwall.paintGL();
+  m_frontwall.paintGL(0.0f, glm::vec3(1, 0, 0), glm::vec3(-2.0f, 0.0f, -2.0f), 1.5f, glm::vec4(0.67f, 0.13f, 0.13f, 1.0f));
 
   // draw lamps
   m_lamp1.paintGL(270.0f, glm::vec3(1, 0, 0), glm::vec3(-2.0f, 0.0f, -1.8f), 0.006f, glm::vec4(1.0f, 0.8f, 0.0f, 1.0f));
@@ -132,7 +132,7 @@ void OpenGLWindow::paintGL() {
   m_lamp4.paintGL(270.0f, glm::vec3(1, 0, 0), glm::vec3(1.7f, 0.0f, 1.8f), 0.006f, glm::vec4(1.0f, 0.8f, 0.0f, 1.0f));
 
   // draw couch
-  m_couch.paintGL(270.0f, glm::vec3(1, 0, 0), glm::vec3(0.0f, 0.2f, -1.8f), 0.006f, glm::vec4(0.45f, 0.5f, 0.55f, 1.0f));
+  m_couch.paintGL(270.0f, glm::vec3(1, 0, 0), glm::vec3(0.0f, 0.2f, -1.7f), 0.006f, glm::vec4(0.45f, 0.5f, 0.55f, 1.0f));
 
   // draw table
   m_table.paintGL(90.0f, glm::vec3(0, 1, 0), glm::vec3(0.0f, 0.14f, -0.2f), 0.28f, glm::vec4(0.54f, 0.26f, 0.074f, 1.0f));

@@ -7,10 +7,6 @@
 #include "camera.hpp"
 #include "ground.hpp"
 #include "roof.hpp"
-#include "left_wall.hpp"
-#include "right_wall.hpp"
-#include "back_wall.hpp"
-#include "front_wall.hpp"
 #include "model.hpp"
 
 
@@ -40,10 +36,10 @@ class OpenGLWindow : public abcg::OpenGLWindow {
 
   Ground m_ground;
   Roof m_roof;
-  Leftwall m_leftwall;
-  Rightwall m_rightwall;
-  Backwall m_backwall;
-  Frontwall m_frontwall;
+  Model m_leftwall;
+  Model m_rightwall;
+  Model m_backwall;
+  Model m_frontwall;
   Model m_lamp1;
   Model m_lamp2;
   Model m_lamp3;
