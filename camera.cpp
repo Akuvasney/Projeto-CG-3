@@ -55,17 +55,17 @@ void Camera::pan(float speed, int direction) {
   if(direction){
     glm::vec3 new_point = transform * glm::vec4(m_at, 1.0f);
     glm::vec3 vector(m_at-m_eye);
-    glm::vec3 protection_axis;
-    if(vector.z>0){
-      protection_axis = glm::vec3(0,0,1);
-    }else{
-      protection_axis = glm::vec3(0,0,-1);
-    }
+    glm::vec3 protection_axis(vector.x, 0, vector.z);
+
     float vec_product = glm::dot(glm::normalize(new_point-m_eye),glm::normalize(protection_axis));
     float angle = glm::degrees(glm::acos(vec_product));
     if(angle < 90.0f){
       m_at = transform * glm::vec4(m_at, 1.0f);
     }
+
+  }else{
+    m_at = transform * glm::vec4(m_at, 1.0f);
+  }
 
   }else{
     m_at = transform * glm::vec4(m_at, 1.0f);
