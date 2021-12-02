@@ -5,8 +5,6 @@
 
 #include "abcg.hpp"
 #include "camera.hpp"
-#include "ground.hpp"
-#include "roof.hpp"
 #include "model.hpp"
 
 
@@ -20,10 +18,25 @@ class OpenGLWindow : public abcg::OpenGLWindow {
   void terminateGL() override;
 
  private:
-  GLuint m_VAO{};
-  GLuint m_VBO{};
-  GLuint m_EBO{};
+
+  void render_model(Model *item, float angle, glm::vec3 axis, glm::vec3 position, float scale_size);
+
   GLuint m_program{};
+
+  GLint m_diffuseTexLoc{};
+  GLint m_mappingModeLoc{};
+  GLint m_modelMatrixLoc{};
+  GLint m_normalMatrixLoc{};
+  GLint m_lightDirLoc{};
+  GLint m_shininessLoc{};
+  GLint m_IaLoc{};
+  GLint m_IdLoc{};
+  GLint m_IsLoc{};
+  GLint m_KaLoc{};
+  GLint m_KdLoc{};
+  GLint m_KsLoc{};
+  GLint m_colorLoc{};
+
 
   int m_viewportWidth{};
   int m_viewportHeight{};
@@ -34,8 +47,8 @@ class OpenGLWindow : public abcg::OpenGLWindow {
   float m_panSpeed{0.0f};
   glm::vec3 m_last_mouse_position{0,0,0};
 
-  Ground m_ground;
-  Roof m_roof;
+  Model m_ground;
+  Model m_roof;
   Model m_leftwall;
   Model m_rightwall;
   Model m_backwall;
@@ -50,10 +63,20 @@ class OpenGLWindow : public abcg::OpenGLWindow {
   Model m_rug;
   Model m_slender;
 
-  std::vector<Vertex> m_vertices;
-  std::vector<GLuint> m_indices;
+  glm::mat4 m_viewMatrix{1.0f};
+  glm::mat4 m_projMatrix{1.0f};
 
-  void loadModelFromFile(std::string_view path);
+
+  // Light and material properties
+  glm::vec4 m_lightDir{-1.0f, -1.0f, -1.0f, 0.0f};
+  glm::vec4 m_Ia{1.0f, 1.0f, 1.0f, 1.0f};
+  glm::vec4 m_Id{1.0f, 1.0f, 1.0f, 1.0f};
+  glm::vec4 m_Is{1.0f, 1.0f, 1.0f, 1.0f};
+  glm::vec4 m_Ka{0.1f, 0.1f, 0.1f, 1.0f};
+  glm::vec4 m_Kd{0.7f, 0.7f, 0.7f, 1.0f};
+  glm::vec4 m_Ks{1.0f, 1.0f, 1.0f, 1.0f};
+  float m_shininess{25.0f};
+
   void update();
 };
 
