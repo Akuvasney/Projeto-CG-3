@@ -10,6 +10,8 @@
 #include <glm/gtx/hash.hpp>
 #include <unordered_map>
 
+
+//Eventos do teclado
 void OpenGLWindow::handleEvent(SDL_Event& ev) {
   if (ev.type == SDL_KEYDOWN) {
     if (ev.key.keysym.sym == SDLK_UP || ev.key.keysym.sym == SDLK_w)
@@ -36,6 +38,7 @@ void OpenGLWindow::handleEvent(SDL_Event& ev) {
       m_truckSpeed = 0.0f;
   }
 
+  // eventos do mouse
   if (ev.type == SDL_MOUSEMOTION) {
     const float deltaTime{static_cast<float>(getDeltaTime())};
 
@@ -57,16 +60,32 @@ void OpenGLWindow::initializeGL() {
 
   abcg::glClearColor(0, 0, 0, 1);
 
-  // Enable depth buffering
   abcg::glEnable(GL_DEPTH_TEST);
 
-  // Create program
+  // Criando programa
   m_program = createProgramFromFile(getAssetsPath() + "shaders/lookat.vert",
                                     getAssetsPath() + "shaders/lookat.frag");
 
   m_ground.initializeGL(m_program, getAssetsPath() + "models/wall.obj", getAssetsPath() + "maps/wood.jpg");
   m_couch.initializeGL(m_program, getAssetsPath() + "models/sofa.obj", getAssetsPath() + "maps/Sofa_albedo.jpg");
-
+  m_lamp1.initializeGL(m_program, getAssetsPath() + "models/lamp.obj", getAssetsPath() + "maps/lamp.jpg");
+  m_lamp2.initializeGL(m_program, getAssetsPath() + "models/lamp.obj", getAssetsPath() + "maps/lamp.jpg");
+  m_lamp3.initializeGL(m_program, getAssetsPath() + "models/lamp.obj", getAssetsPath() + "maps/lamp.jpg");
+  m_lamp4.initializeGL(m_program, getAssetsPath() + "models/lamp.obj", getAssetsPath() + "maps/lamp.jpg");
+  m_rug.initializeGL(m_program, getAssetsPath() + "models/rug.obj", getAssetsPath() + "maps/tapete.jpg");
+  m_leftwall.initializeGL(m_program, getAssetsPath() + "models/wall.obj", getAssetsPath() + "maps/wall.jpg");
+  m_rightwall.initializeGL(m_program, getAssetsPath() +"models/wall.obj", getAssetsPath() + "maps/wall.jpg");
+  m_frontwall.initializeGL(m_program, getAssetsPath() + "models/wall.obj", getAssetsPath() + "maps/wall.jpg");
+  m_backwall.initializeGL(m_program, getAssetsPath() + "models/wall.obj", getAssetsPath() + "maps/wall.jpg");
+  m_roof.initializeGL(m_program, getAssetsPath() + "models/wall.obj", getAssetsPath() + "maps/wood.jpg");
+  m_quadro1.initializeGL(m_program, getAssetsPath() + "models/retrato.obj", getAssetsPath() + "maps/retrato.png");
+  m_quadro2.initializeGL(m_program, getAssetsPath() + "models/retrato.obj", getAssetsPath() + "maps/retrato2.png");
+  m_escr1.initializeGL(m_program, getAssetsPath() + "models/escrivaninha.obj", getAssetsPath() + "maps/escrivaninha.png");
+  m_escr2.initializeGL(m_program, getAssetsPath() + "models/escrivaninha.obj", getAssetsPath() + "maps/escrivaninha.png");
+  m_table.initializeGL(m_program, getAssetsPath() + "models/central-table.obj", getAssetsPath() + "maps/escrivaninha.png");
+  m_tv.initializeGL(m_program, getAssetsPath() + "models/tv.obj", getAssetsPath() + "maps/tv.jpg");
+  m_chandelier.initializeGL(m_program, getAssetsPath() + "models/chandelier.obj", getAssetsPath() + "maps/chandelier.jpg");
+  m_slender.initializeGL(m_program, getAssetsPath() + "models/slenderman.obj", getAssetsPath() + "maps/slenderman.jpg");
 }
 
 void OpenGLWindow::paintGL() {
@@ -102,12 +121,49 @@ void OpenGLWindow::paintGL() {
   glUniformMatrix4fv(projMatrixLoc, 1, GL_FALSE,
                      &m_camera.m_projMatrix[0][0]);
   
-  // Draw floor
-  render_model(&m_ground, -90.0f, glm::vec3(1,0,0), glm::vec3(0.0f, 0.0f, 0.0f), 5.0f);
+  // Desenhando chão
+  render_model(&m_ground, -90.0f, glm::vec3(1,0,0), glm::vec3(0.0f, 0.0f, 0.0f), 2.8f);
 
-  // Draw couch
-  render_model(&m_couch, 270.0f, glm::vec3(1,0,0), glm::vec3(0.0f, 0.2f, -1.7f), 0.56f);
+  // Desenhando sofá
+  render_model(&m_couch, 270.0f, glm::vec3(1,0,0), glm::vec3(0.0f, 0.2f, -1.65f), 0.56f);
 
+  // Desenhando lampadas
+  render_model(&m_lamp1, 270.0f, glm::vec3(1, 0, 0), glm::vec3(1.8f, 0.35f, -1.8f), 0.35f);
+  render_model(&m_lamp2, 270.0f, glm::vec3(1, 0, 0), glm::vec3(-1.8f, 0.35f, -1.8f), 0.35f);
+  render_model(&m_lamp3, 270.0f, glm::vec3(1, 0, 0), glm::vec3(1.8f, 0.35f, 1.8f), 0.35f);
+  render_model(&m_lamp4, 270.0f, glm::vec3(1, 0, 0), glm::vec3(-1.8f, 0.35f, 1.8f), 0.35f);
+
+  // Desenhando tapete
+  render_model(&m_rug, 270.0f, glm::vec3(1, 0, 0), glm::vec3(0.0f, 0.0f, -1.2f), 0.9f);
+
+  // Desenhando paredes
+  render_model(&m_backwall, 0.0f, glm::vec3(1,0,0), glm::vec3(0.0f, 1.0f, -1.9f), 2.8f);
+  render_model(&m_leftwall, 90.0f, glm::vec3(0,1,0), glm::vec3(-1.9f, 1.0f, 0.0f), 2.8f);
+  render_model(&m_rightwall, -90.0f, glm::vec3(0,1,0), glm::vec3(1.9f, 1.0f, 0.0f), 2.8f);
+  render_model(&m_frontwall, 180.0f, glm::vec3(1,0,0), glm::vec3(0.0f, 1.0f, 1.9f), 2.8f);
+
+  // Desenhando teto
+  render_model(&m_roof, 90.0f, glm::vec3(1,0,0), glm::vec3(0.0f, 3.0f, 0.0f), 2.8f);
+
+  // Desenhando quadro
+  render_model(&m_quadro1, -90.0f, glm::vec3(1,0,0), glm::vec3(0.75f, 0.4f, -1.7f), 0.1f);
+  render_model(&m_quadro2, -90.0f, glm::vec3(1,0,0), glm::vec3(-0.75f, 0.4f, -1.7f), 0.1f);
+
+  // Desenhando mesas de canto
+  render_model(&m_escr1, 0.0f, glm::vec3(1,0,0), glm::vec3(0.75f, 0.15f, -1.7f), 0.3f);
+  render_model(&m_escr2, 0.0f, glm::vec3(1,0,0), glm::vec3(-0.75f, 0.15f, -1.7f), 0.3f);
+
+  // Desenhando mesa central
+  render_model(&m_table, 90.0f, glm::vec3(0,1,0), glm::vec3(0.0f, 0.1f, -0.5f), 0.3f);
+
+  // Desenhando TV
+  render_model(&m_tv, 180.0f, glm::vec3(0,1,0), glm::vec3(0.0f, 0.4f, -0.5f), 0.4f);
+
+  // Desenhando lustre
+  render_model(&m_chandelier, 0.0f, glm::vec3(1,0,0), glm::vec3(0.0f, 2.5f, 0.0f), 0.7f);
+
+  // Desenhando figura humana
+  render_model(&m_slender, 0.0f, glm::vec3(1,0,0), glm::vec3(0.0f, 0.93f, -1.1f), 1.0f);
 
   abcg::glUseProgram(0);
 }
@@ -124,13 +180,31 @@ void OpenGLWindow::resizeGL(int width, int height) {
 void OpenGLWindow::terminateGL() {
   m_ground.terminateGL();
   m_couch.terminateGL();
+  m_lamp1.terminateGL();
+  m_lamp2.terminateGL();
+  m_lamp3.terminateGL();
+  m_lamp4.terminateGL();
+  m_frontwall.terminateGL();
+  m_backwall.terminateGL();
+  m_leftwall.terminateGL();
+  m_rightwall.terminateGL();
+  m_roof.terminateGL();
+  m_quadro1.terminateGL();
+  m_quadro2.terminateGL();
+  m_escr1.terminateGL();
+  m_escr2.terminateGL();  
+  m_table.terminateGL();
+  m_tv.terminateGL();
+  m_chandelier.terminateGL();
+  m_slender.terminateGL();
+
   abcg::glDeleteProgram(m_program);
 }
 
 void OpenGLWindow::update() {
   const float deltaTime{static_cast<float>(getDeltaTime())};
 
-  // Update LookAt camera
+  // Atualiza a camera
   m_camera.dolly(m_dollySpeed * deltaTime);
   m_camera.truck(m_truckSpeed * deltaTime);
 }

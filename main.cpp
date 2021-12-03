@@ -14,7 +14,7 @@ int main(int argc, char **argv) {
                                .height = 600,
                                .showFPS = false,
                                .showFullscreenButton = false,
-                               .title = "The Room"});
+                               .title = "The Room 2"});
 
     app.run(std::move(window));
   } catch (const abcg::Exception &exception) {

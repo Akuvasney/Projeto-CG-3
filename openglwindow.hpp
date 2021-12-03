@@ -62,7 +62,11 @@ class OpenGLWindow : public abcg::OpenGLWindow {
   Model m_tv;
   Model m_rug;
   Model m_slender;
-
+  Model m_quadro1;
+  Model m_quadro2;
+  Model m_escr1;
+  Model m_escr2;
+  Model m_chandelier;
   glm::mat4 m_viewMatrix{1.0f};
   glm::mat4 m_projMatrix{1.0f};
 
