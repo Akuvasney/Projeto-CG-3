@@ -54,9 +54,33 @@ void OpenGLWindow::handleEvent(SDL_Event& ev) {
   }
 }
 
-void OpenGLWindow::initializeGL() {
-
+void OpenGLWindow::restart() {
   SDL_SetRelativeMouseMode(SDL_TRUE);
+  m_gameData.m_state = State::Playing;
+  m_ground.initializeGL(m_program, getAssetsPath() + "models/wall.obj", getAssetsPath() + "maps/wood.jpg");
+  m_couch.initializeGL(m_program, getAssetsPath() + "models/sofa.obj", getAssetsPath() + "maps/Sofa_albedo.jpg");
+  m_lamp1.initializeGL(m_program, getAssetsPath() + "models/lamp.obj", getAssetsPath() + "maps/lamp.jpg");
+  m_lamp2.initializeGL(m_program, getAssetsPath() + "models/lamp.obj", getAssetsPath() + "maps/lamp.jpg");
+  m_lamp3.initializeGL(m_program, getAssetsPath() + "models/lamp.obj", getAssetsPath() + "maps/lamp.jpg");
+  m_lamp4.initializeGL(m_program, getAssetsPath() + "models/lamp.obj", getAssetsPath() + "maps/lamp.jpg");
+  m_rug.initializeGL(m_program, getAssetsPath() + "models/rug.obj", getAssetsPath() + "maps/tapete.jpg");
+  m_leftwall.initializeGL(m_program, getAssetsPath() + "models/wall.obj", getAssetsPath() + "maps/wall.jpg");
+  m_rightwall.initializeGL(m_program, getAssetsPath() +"models/wall.obj", getAssetsPath() + "maps/wall.jpg");
+  m_frontwall.initializeGL(m_program, getAssetsPath() + "models/wall.obj", getAssetsPath() + "maps/wall.jpg");
+  m_backwall.initializeGL(m_program, getAssetsPath() + "models/wall.obj", getAssetsPath() + "maps/wall.jpg");
+  m_roof.initializeGL(m_program, getAssetsPath() + "models/wall.obj", getAssetsPath() + "maps/wood.jpg");
+  m_quadro1.initializeGL(m_program, getAssetsPath() + "models/retrato.obj", getAssetsPath() + "maps/retrato.png");
+  m_quadro2.initializeGL(m_program, getAssetsPath() + "models/retrato.obj", getAssetsPath() + "maps/retrato2.png");
+  m_escr1.initializeGL(m_program, getAssetsPath() + "models/escrivaninha.obj", getAssetsPath() + "maps/escrivaninha.png");
+  m_escr2.initializeGL(m_program, getAssetsPath() + "models/escrivaninha.obj", getAssetsPath() + "maps/escrivaninha.png");
+  m_table.initializeGL(m_program, getAssetsPath() + "models/central-table.obj", getAssetsPath() + "maps/escrivaninha.png");
+  m_tv.initializeGL(m_program, getAssetsPath() + "models/tv.obj", getAssetsPath() + "maps/tv.jpg");
+  m_chandelier.initializeGL(m_program, getAssetsPath() + "models/chandelier.obj", getAssetsPath() + "maps/chandelier.jpg");
+  m_slender.initializeGL(m_program, getAssetsPath() + "models/slenderman.obj", getAssetsPath() + "maps/slenderman.jpg");
+
+}
+
+void OpenGLWindow::initializeGL() {
 
   abcg::glClearColor(0, 0, 0, 1);
 
@@ -168,7 +192,23 @@ void OpenGLWindow::paintGL() {
   abcg::glUseProgram(0);
 }
 
-void OpenGLWindow::paintUI() { abcg::OpenGLWindow::paintUI(); }
+void OpenGLWindow::paintUI() { 
+  abcg::OpenGLWindow::paintUI(); 
+  if (m_gameData.m_state == State::Initial) {
+      ImGui::Text("*The Room 2.0!*");
+      ImGui::Text("Mexa o mouse para virar a camera.");
+      ImGui::Text("Ande com as teclas W-A-S-D.");
+      ImGui::Text("Aperte F11 para entrar/sair da tela cheia.");
+      ImGui::Text("Aperte ALT+F4 para fechar a aplicação.");
+      ImGui::Text("Ao clicar em INICIAR, aguardar o carregamento.");
+
+      ImGui::Button("INICIAR", ImVec2(-1, 50));
+      if (ImGui::IsItemClicked()) {
+        restart();
+      }
+
+  }
+  }
 
 void OpenGLWindow::resizeGL(int width, int height) {
   m_viewportWidth = width;

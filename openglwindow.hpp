@@ -6,6 +6,7 @@
 #include "abcg.hpp"
 #include "camera.hpp"
 #include "model.hpp"
+#include "gamedata.hpp"
 
 
 class OpenGLWindow : public abcg::OpenGLWindow {
@@ -40,7 +41,9 @@ class OpenGLWindow : public abcg::OpenGLWindow {
 
   int m_viewportWidth{};
   int m_viewportHeight{};
-
+  
+  GameData m_gameData;
+  
   Camera m_camera;
   float m_dollySpeed{0.0f};
   float m_truckSpeed{0.0f};
@@ -71,6 +74,7 @@ class OpenGLWindow : public abcg::OpenGLWindow {
   glm::mat4 m_projMatrix{1.0f};
 
 
+
   // Light and material properties
   glm::vec4 m_lightDir{-1.0f, -1.0f, -1.0f, 0.0f};
   glm::vec4 m_Ia{1.0f, 1.0f, 1.0f, 1.0f};
@@ -82,6 +86,7 @@ class OpenGLWindow : public abcg::OpenGLWindow {
   float m_shininess{25.0f};
 
   void update();
+  void restart();
 };
 
 #endif
