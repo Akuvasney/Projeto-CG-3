@@ -310,5 +310,8 @@ void OpenGLWindow::checkLight() {
       return;
     }
   }
-  m_lightDir = glm::vec4(0.0f, -1.0f, -1.0f, 0.0f);
+  glm::vec3 forward = glm::vec3(m_camera.m_at-m_camera.m_eye);
+  //Atualiza direção da luz de acordo com o vetor forward para causar máxima impressão de
+  //Iluminação na sala inteira (por uma lâmpada)
+  m_lightDir = glm::vec4(forward.x, -1.0f, forward.z, 0.0f);
 }

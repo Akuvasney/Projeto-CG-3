@@ -192,7 +192,7 @@ void Model::loadFromFile(std::string_view path, GLuint program, bool standardize
     m_Ka = {0.1f, 0.1f, 0.1f, 1.0f};
     m_Kd = {0.7f, 0.7f, 0.7f, 1.0f};
     m_Ks = {1.0f, 1.0f, 1.0f, 1.0f};
-    m_shininess = 50.0f;
+    m_shininess = 35.0f;
   }
 
   if (standardize) {
