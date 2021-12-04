@@ -28,7 +28,8 @@ class Model {
   void terminateGL();
 
   glm::vec3 m_position{};
-
+  bool m_far{true};
+  
   int getNumTriangles() const {
     return static_cast<int>(m_indices.size()) / 3;
   }

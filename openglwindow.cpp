@@ -24,6 +24,8 @@ void OpenGLWindow::handleEvent(SDL_Event& ev) {
       m_truckSpeed = 1.0f;
     if (ev.key.keysym.sym == SDLK_LSHIFT || ev.key.keysym.sym == SDLK_RSHIFT)
       m_modSpeed = 2.0f;
+    if (ev.key.keysym.sym == SDLK_ESCAPE && m_gameData.m_state == State::Playing)
+      m_gameData.m_state = State::Paused;
   }
   if (ev.type == SDL_KEYUP) {
     if ((ev.key.keysym.sym == SDLK_UP || ev.key.keysym.sym == SDLK_w) &&
@@ -63,28 +65,6 @@ void OpenGLWindow::handleEvent(SDL_Event& ev) {
 void OpenGLWindow::restart() {
   SDL_SetRelativeMouseMode(SDL_TRUE);
   m_gameData.m_state = State::Playing;
-  m_ground.initializeGL(m_program, getAssetsPath() + "models/wall.obj", getAssetsPath() + "maps/wood.jpg");
-  m_couch.initializeGL(m_program, getAssetsPath() + "models/sofa.obj", getAssetsPath() + "maps/Sofa_albedo.jpg");
-  m_lamp1.initializeGL(m_program, getAssetsPath() + "models/lamp.obj", getAssetsPath() + "maps/lamp.jpg");
-  m_lamp2.initializeGL(m_program, getAssetsPath() + "models/lamp.obj", getAssetsPath() + "maps/lamp.jpg");
-  m_lamp3.initializeGL(m_program, getAssetsPath() + "models/lamp.obj", getAssetsPath() + "maps/lamp.jpg");
-  m_lamp4.initializeGL(m_program, getAssetsPath() + "models/lamp.obj", getAssetsPath() + "maps/lamp.jpg");
-  m_rug.initializeGL(m_program, getAssetsPath() + "models/rug.obj", getAssetsPath() + "maps/tapete.jpg");
-  m_leftwall.initializeGL(m_program, getAssetsPath() + "models/wall.obj", getAssetsPath() + "maps/wall.jpg");
-  m_rightwall.initializeGL(m_program, getAssetsPath() +"models/wall.obj", getAssetsPath() + "maps/wall.jpg");
-  m_frontwall.initializeGL(m_program, getAssetsPath() + "models/wall.obj", getAssetsPath() + "maps/wall.jpg");
-  m_backwall.initializeGL(m_program, getAssetsPath() + "models/wall.obj", getAssetsPath() + "maps/wall.jpg");
-  m_roof.initializeGL(m_program, getAssetsPath() + "models/wall.obj", getAssetsPath() + "maps/wood.jpg");
-  m_quadro1.initializeGL(m_program, getAssetsPath() + "models/retrato.obj", getAssetsPath() + "maps/retrato.png");
-  m_quadro2.initializeGL(m_program, getAssetsPath() + "models/retrato.obj", getAssetsPath() + "maps/retrato2.png");
-  m_escr1.initializeGL(m_program, getAssetsPath() + "models/escrivaninha.obj", getAssetsPath() + "maps/escrivaninha.png");
-  m_escr2.initializeGL(m_program, getAssetsPath() + "models/escrivaninha.obj", getAssetsPath() + "maps/escrivaninha.png");
-  m_table.initializeGL(m_program, getAssetsPath() + "models/central-table.obj", getAssetsPath() + "maps/escrivaninha.png");
-  m_tv.initializeGL(m_program, getAssetsPath() + "models/tv.obj", getAssetsPath() + "maps/tv.jpg");
-  m_chandelier.initializeGL(m_program, getAssetsPath() + "models/chandelier.obj", getAssetsPath() + "maps/chandelier.jpg");
-  m_slender.initializeGL(m_program, getAssetsPath() + "models/slenderman.obj", getAssetsPath() + "maps/slenderman.jpg");
-  m_interr.initializeGL(m_program, getAssetsPath() + "models/interruptor.obj", getAssetsPath() + "maps/interruptor.jpg");
-
 }
 
 void OpenGLWindow::initializeGL() {
@@ -117,7 +97,8 @@ void OpenGLWindow::initializeGL() {
   m_tv.initializeGL(m_program, getAssetsPath() + "models/tv.obj", getAssetsPath() + "maps/tv.jpg");
   m_chandelier.initializeGL(m_program, getAssetsPath() + "models/chandelier.obj", getAssetsPath() + "maps/chandelier.jpg");
   m_slender.initializeGL(m_program, getAssetsPath() + "models/slenderman.obj", getAssetsPath() + "maps/slenderman.jpg");
-  m_interr.initializeGL(m_program, getAssetsPath() + "models/interruptor.obj", getAssetsPath() + "maps/interruptor.jpg");
+  m_interr1.initializeGL(m_program, getAssetsPath() + "models/interruptor.obj", getAssetsPath() + "maps/interruptor.jpg");
+  m_interr2.initializeGL(m_program, getAssetsPath() + "models/interruptor.obj", getAssetsPath() + "maps/interruptor.jpg");
 }
 
 void OpenGLWindow::paintGL() {
@@ -196,8 +177,12 @@ void OpenGLWindow::paintGL() {
   // Desenhando figura humana
   render_model(&m_slender, 0.0f, glm::vec3(1,0,0), glm::vec3(0.0f, 0.93f, -1.1f), 1.0f);
 
-  // Desenhando interruptor
-  render_model(&m_interr, -90.0f, glm::vec3(1,0,0), glm::vec3(0.0f, 0.5f, 1.89999999f), 0.1f);
+  // Desenhando primeiro interruptor
+  render_model(&m_interr1, -90.0f, glm::vec3(0,0,1), glm::vec3(-1.9f, 0.5f, 0.0f), 0.1f);
+  
+  //Desenhando segundo interruptor
+  render_model(&m_interr2, 90.0f, glm::vec3(0,0,1), glm::vec3(1.9f, 0.5f, 0.0f), 0.1f);
+
   abcg::glUseProgram(0);
 
   update();
@@ -206,7 +191,12 @@ void OpenGLWindow::paintGL() {
 void OpenGLWindow::paintUI() { 
   abcg::OpenGLWindow::paintUI(); 
   // caso o m_state seja INITIAL, criar os elementos do menu:
-  if (m_gameData.m_state == State::Initial) {
+  if (m_gameData.m_state != State::Playing) {
+      //Zerando velocidades para evitar bugs
+      m_dollySpeed = 0.0f;
+      m_truckSpeed = 0.0f;
+      m_modSpeed = 1.0f;
+      SDL_SetRelativeMouseMode(SDL_FALSE);
       bool show = true;
       ImGuiWindowFlags window_flags = 0;
       window_flags |= ImGuiWindowFlags_NoMove;
@@ -216,12 +206,20 @@ void OpenGLWindow::paintUI() {
       ImGui::Text("Mexa o mouse para virar a camera.");
       ImGui::Text("Ande com as teclas W-A-S-D.");
       ImGui::Text("Corra com a tecla SHIFT.");
-      ImGui::Text("Se aproxime de um interruptor (na parede de trás) para acender/apagar a luz.");
+      ImGui::Text("Se aproxime de um interruptor (nas paredes laterais) para acender/apagar a luz.");
       ImGui::Text("Aperte F11 para entrar/sair da tela cheia.");
       ImGui::Text("Aperte ALT+F4 para fechar a aplicação.");
-      ImGui::Text("Ao clicar em INICIAR, aguardar o carregamento.");
 
-      ImGui::Button("INICIAR", ImVec2(-1, 50));
+      if(m_gameData.m_state == State::Initial){
+        ImGui::Text("Clique em INICIAR para jogar.");
+
+        ImGui::Button("INICIAR", ImVec2(-1, 50));
+      }else{
+        ImGui::Text("Clique em RETOMAR para voltar a jogar.");
+
+        ImGui::Button("RETOMAR", ImVec2(-1, 50));
+      }
+
       if (ImGui::IsItemClicked()) {
         restart();
       }
@@ -257,7 +255,8 @@ void OpenGLWindow::terminateGL() {
   m_tv.terminateGL();
   m_chandelier.terminateGL();
   m_slender.terminateGL();
-  m_interr.terminateGL();
+  m_interr1.terminateGL();
+  m_interr2.terminateGL();
 
   abcg::glDeleteProgram(m_program);
 }
@@ -309,19 +308,19 @@ void OpenGLWindow::render_model(Model *item, float angle, glm::vec3 axis, glm::v
 
 //Checa se câmera está proxima a interruptor e atualiza estado de iluminação
 void OpenGLWindow::checkLight() {
-  //Percorre interruptor para checar se está proximo a algum deles
+  //Percorre interruptores para checar se está proximo a algum deles
   for (Model* model : m_interruptors){
 
     if(abs(m_camera.m_eye.x - model->m_position.x) > 0.25f || abs(m_camera.m_eye.z - model->m_position.z) > 0.25f){
-      m_far = true;
+      model->m_far = true;
     }else if(abs(m_camera.m_eye.x - model->m_position.x) <= 0.25f || abs(m_camera.m_eye.z - model->m_position.z) <= 0.25f){
-      if(m_far && m_on){
+      if(model->m_far && m_on){
         m_on = false;
-        m_far = false;
+        model->m_far = false;
 
-      }else if(m_far && !m_on){
+      }else if(model->m_far && !m_on){
         m_on = true;
-        m_far = false;
+        model->m_far = false;
       }
     }
   }
