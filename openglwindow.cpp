@@ -93,8 +93,8 @@ void OpenGLWindow::initializeGL() {
   abcg::glEnable(GL_DEPTH_TEST);
 
   // Criando programa
-  m_program = createProgramFromFile(getAssetsPath() + "shaders/lookat.vert",
-                                    getAssetsPath() + "shaders/lookat.frag");
+  m_program = createProgramFromFile(getAssetsPath() + "shaders/texture.vert",
+                                    getAssetsPath() + "shaders/texture.frag");
 
   m_ground.initializeGL(m_program, getAssetsPath() + "models/wall.obj", getAssetsPath() + "maps/wood.jpg");
   m_couch.initializeGL(m_program, getAssetsPath() + "models/sofa.obj", getAssetsPath() + "maps/Sofa_albedo.jpg");
