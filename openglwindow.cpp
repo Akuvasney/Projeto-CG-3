@@ -206,7 +206,7 @@ void OpenGLWindow::paintUI() {
       ImGui::Text("Mexa o mouse para virar a camera.");
       ImGui::Text("Ande com as teclas W-A-S-D.");
       ImGui::Text("Corra com a tecla SHIFT.");
-      ImGui::Text("Se aproxime de um interruptor (nas paredes laterais) para acender/apagar a luz.");
+      ImGui::Text("Se aproxime de um interruptor (nas paredes laterais) p/ acender/apagar a luz.");
       ImGui::Text("Aperte F11 para entrar/sair da tela cheia.");
       ImGui::Text("Aperte ALT+F4 para fechar a aplicação.");
 
