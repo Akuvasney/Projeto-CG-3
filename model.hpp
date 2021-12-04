@@ -27,6 +27,8 @@ class Model {
   void setupVAO(GLuint program);
   void terminateGL();
 
+  glm::vec3 m_position{};
+
   [[nodiscard]] int getNumTriangles() const {
     return static_cast<int>(m_indices.size()) / 3;
   }

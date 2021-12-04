@@ -120,7 +120,6 @@ void OpenGLWindow::initializeGL() {
 
 void OpenGLWindow::paintGL() {
   
-  update();
 
   // Clear color buffer and depth buffer
   abcg::glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -196,6 +195,8 @@ void OpenGLWindow::paintGL() {
   render_model(&m_slender, 0.0f, glm::vec3(1,0,0), glm::vec3(0.0f, 0.93f, -1.1f), 1.0f);
 
   abcg::glUseProgram(0);
+
+  update();
 }
 
 void OpenGLWindow::paintUI() { 
@@ -211,6 +212,7 @@ void OpenGLWindow::paintUI() {
       ImGui::Text("Mexa o mouse para virar a camera.");
       ImGui::Text("Ande com as teclas W-A-S-D.");
       ImGui::Text("Corra com a tecla SHIFT.");
+      ImGui::Text("Se aproxime de um interruptor para desligar a luz.");
       ImGui::Text("Aperte F11 para entrar/sair da tela cheia.");
       ImGui::Text("Aperte ALT+F4 para fechar a aplicação.");
       ImGui::Text("Ao clicar em INICIAR, aguardar o carregamento.");
@@ -261,9 +263,13 @@ void OpenGLWindow::update() {
   // Atualiza a camera
   m_camera.dolly(m_modSpeed * m_dollySpeed * deltaTime);
   m_camera.truck(m_modSpeed * m_truckSpeed * deltaTime);
+  checkLight();
 }
 
+//Renderiza um modelo
 void OpenGLWindow::render_model(Model *item, float angle, glm::vec3 axis, glm::vec3 position, float scale_size){
+  item->m_position = position;
+
   glm::mat4 model{1.0f};
   model = glm::translate(model, position);
   model = glm::rotate(model, glm::radians(angle), axis);
@@ -294,4 +300,15 @@ void OpenGLWindow::render_model(Model *item, float angle, glm::vec3 axis, glm::v
   glUniform4fv(m_KsLoc, 1, &ks.x);
 
   item->render(-1);
+}
+
+//Checa se câmera está proxima a interruptor
+void OpenGLWindow::checkLight() {
+  for (Model* model : m_interruptors){
+    if(abs(m_camera.m_eye.x - model->m_position.x) < 0.25f && abs(m_camera.m_eye.z - model->m_position.z) < 0.25f){
+      m_lightDir = glm::vec4(0.0f, 0.0f, 0.0f, 0.0f);
+      return;
+    }
+  }
+  m_lightDir = glm::vec4(0.0f, -1.0f, -1.0f, 0.0f);
 }

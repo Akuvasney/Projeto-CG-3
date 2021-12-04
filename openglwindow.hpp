@@ -2,6 +2,7 @@
 #define OPENGLWINDOW_HPP_
 
 #include <vector>
+#include <list>
 
 #include "abcg.hpp"
 #include "camera.hpp"
@@ -21,7 +22,7 @@ class OpenGLWindow : public abcg::OpenGLWindow {
  private:
 
   void render_model(Model *item, float angle, glm::vec3 axis, glm::vec3 position, float scale_size);
-
+  void checkLight();
   GLuint m_program{};
 
   GLint m_diffuseTexLoc{};
@@ -74,7 +75,8 @@ class OpenGLWindow : public abcg::OpenGLWindow {
   glm::mat4 m_viewMatrix{1.0f};
   glm::mat4 m_projMatrix{1.0f};
 
-
+  //lista de interruptores
+  std::list<Model*> m_interruptors {&m_frontwall};
 
   // Propriedades da luz e materiais:
   glm::vec4 m_lightDir{0.0f, -1.0f, -1.0f, 0.0f};
