@@ -39,7 +39,8 @@ class OpenGLWindow : public abcg::OpenGLWindow {
   GLint m_KsLoc{};
   GLint m_colorLoc{};
 
-
+  bool m_on{false};
+  bool m_far{true};
   int m_viewportWidth{};
   int m_viewportHeight{};
   

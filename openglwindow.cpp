@@ -216,7 +216,7 @@ void OpenGLWindow::paintUI() {
       ImGui::Text("Mexa o mouse para virar a camera.");
       ImGui::Text("Ande com as teclas W-A-S-D.");
       ImGui::Text("Corra com a tecla SHIFT.");
-      ImGui::Text("Se aproxime de um interruptor para desligar a luz.");
+      ImGui::Text("Se aproxime de um interruptor (na parede de trás) para acender/apagar a luz.");
       ImGui::Text("Aperte F11 para entrar/sair da tela cheia.");
       ImGui::Text("Aperte ALT+F4 para fechar a aplicação.");
       ImGui::Text("Ao clicar em INICIAR, aguardar o carregamento.");
@@ -307,16 +307,31 @@ void OpenGLWindow::render_model(Model *item, float angle, glm::vec3 axis, glm::v
   item->render(-1);
 }
 
-//Checa se câmera está proxima a interruptor
+//Checa se câmera está proxima a interruptor e atualiza estado de iluminação
 void OpenGLWindow::checkLight() {
+  //Percorre interruptor para checar se está proximo a algum deles
   for (Model* model : m_interruptors){
-    if(abs(m_camera.m_eye.x - model->m_position.x) < 0.25f && abs(m_camera.m_eye.z - model->m_position.z) < 0.25f){
-      m_lightDir = glm::vec4(0.0f, 0.0f, 0.0f, 0.0f);
-      return;
+
+    if(abs(m_camera.m_eye.x - model->m_position.x) > 0.25f || abs(m_camera.m_eye.z - model->m_position.z) > 0.25f){
+      m_far = true;
+    }else if(abs(m_camera.m_eye.x - model->m_position.x) <= 0.25f || abs(m_camera.m_eye.z - model->m_position.z) <= 0.25f){
+      if(m_far && m_on){
+        m_on = false;
+        m_far = false;
+
+      }else if(m_far && !m_on){
+        m_on = true;
+        m_far = false;
+      }
     }
   }
-  glm::vec3 forward = glm::vec3(m_camera.m_at-m_camera.m_eye);
+  
   //Atualiza direção da luz de acordo com o vetor forward para causar máxima impressão de
   //Iluminação na sala inteira (por uma lâmpada)
-  m_lightDir = glm::vec4(forward.x, -1.0f, forward.z, 0.0f);
+  if (m_on){
+      glm::vec3 forward = glm::vec3(m_camera.m_at-m_camera.m_eye);
+      m_lightDir = glm::vec4(forward.x, -1.0f, forward.z, 0.0f);
+  }else{
+      m_lightDir = glm::vec4(0.0f, 0.0f, 0.0f, 0.0f);
+  }
 }
