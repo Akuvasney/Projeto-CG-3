@@ -22,6 +22,8 @@ void OpenGLWindow::handleEvent(SDL_Event& ev) {
       m_truckSpeed = -1.0f;
     if (ev.key.keysym.sym == SDLK_RIGHT || ev.key.keysym.sym == SDLK_d)
       m_truckSpeed = 1.0f;
+    if (ev.key.keysym.sym == SDLK_LSHIFT || ev.key.keysym.sym == SDLK_RSHIFT)
+      m_modSpeed = 2.0f;
   }
   if (ev.type == SDL_KEYUP) {
     if ((ev.key.keysym.sym == SDLK_UP || ev.key.keysym.sym == SDLK_w) &&
@@ -36,6 +38,9 @@ void OpenGLWindow::handleEvent(SDL_Event& ev) {
     if ((ev.key.keysym.sym == SDLK_RIGHT || ev.key.keysym.sym == SDLK_d) &&
         m_truckSpeed > 0)
       m_truckSpeed = 0.0f;
+    if ((ev.key.keysym.sym == SDLK_LSHIFT || ev.key.keysym.sym == SDLK_RSHIFT) &&
+        m_modSpeed > 1.0f)
+      m_modSpeed = 1.0f;
   }
 
   // eventos do mouse
@@ -195,9 +200,15 @@ void OpenGLWindow::paintGL() {
 void OpenGLWindow::paintUI() { 
   abcg::OpenGLWindow::paintUI(); 
   if (m_gameData.m_state == State::Initial) {
-      ImGui::Text("*The Room 2.0!*");
+      bool show = true;
+      ImGuiWindowFlags window_flags = 0;
+      window_flags |= ImGuiWindowFlags_NoMove;
+      ImGui::SetNextWindowSize(ImVec2(m_viewportWidth, m_viewportHeight));
+      ImGui::SetNextWindowPos(ImVec2(0, 0));
+      ImGui::Begin("*The Room 2.0!*", &show, window_flags);
       ImGui::Text("Mexa o mouse para virar a camera.");
       ImGui::Text("Ande com as teclas W-A-S-D.");
+      ImGui::Text("Corra com a tecla SHIFT.");
       ImGui::Text("Aperte F11 para entrar/sair da tela cheia.");
       ImGui::Text("Aperte ALT+F4 para fechar a aplicação.");
       ImGui::Text("Ao clicar em INICIAR, aguardar o carregamento.");
@@ -206,6 +217,7 @@ void OpenGLWindow::paintUI() {
       if (ImGui::IsItemClicked()) {
         restart();
       }
+      ImGui::End();
 
   }
   }
@@ -245,8 +257,8 @@ void OpenGLWindow::update() {
   const float deltaTime{static_cast<float>(getDeltaTime())};
 
   // Atualiza a camera
-  m_camera.dolly(m_dollySpeed * deltaTime);
-  m_camera.truck(m_truckSpeed * deltaTime);
+  m_camera.dolly(m_modSpeed * m_dollySpeed * deltaTime);
+  m_camera.truck(m_modSpeed * m_truckSpeed * deltaTime);
 }
 
 void OpenGLWindow::render_model(Model *item, float angle, glm::vec3 axis, glm::vec3 position, float scale_size){

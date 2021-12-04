@@ -48,6 +48,7 @@ class OpenGLWindow : public abcg::OpenGLWindow {
   float m_dollySpeed{0.0f};
   float m_truckSpeed{0.0f};
   float m_panSpeed{0.0f};
+  float m_modSpeed{1.0f};
   glm::vec3 m_last_mouse_position{0,0,0};
 
   Model m_ground;
