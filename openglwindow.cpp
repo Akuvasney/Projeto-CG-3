@@ -59,6 +59,7 @@ void OpenGLWindow::handleEvent(SDL_Event& ev) {
   }
 }
 
+// função restart que é chamada ao alterar o m_state para PLAYING
 void OpenGLWindow::restart() {
   SDL_SetRelativeMouseMode(SDL_TRUE);
   m_gameData.m_state = State::Playing;
@@ -199,6 +200,7 @@ void OpenGLWindow::paintGL() {
 
 void OpenGLWindow::paintUI() { 
   abcg::OpenGLWindow::paintUI(); 
+  // caso o m_state seja INITIAL, criar os elementos do menu:
   if (m_gameData.m_state == State::Initial) {
       bool show = true;
       ImGuiWindowFlags window_flags = 0;

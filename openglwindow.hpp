@@ -76,7 +76,7 @@ class OpenGLWindow : public abcg::OpenGLWindow {
 
 
 
-  // Light and material properties
+  // Propriedades da luz e materiais:
   glm::vec4 m_lightDir{0.0f, -1.0f, -1.0f, 0.0f};
   glm::vec4 m_Ia{1.0f, 1.0f, 1.0f, 1.0f};
   glm::vec4 m_Id{1.0f, 1.0f, 1.0f, 1.0f};

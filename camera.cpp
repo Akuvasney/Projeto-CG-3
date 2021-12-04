@@ -13,11 +13,11 @@ void Camera::computeViewMatrix() {
 }
 
 void Camera::dolly(float speed) {
-  // Compute forward vector (view direction)
+  // Calcular vetor direto (direção da vista)
   glm::vec3 forward{glm::normalize(m_at - m_eye)};
   forward.y = 0;
 
-  // Move eye and center forward (speed > 0) or backward (speed < 0)
+  // Mova o observador e o centro para frente (velocidade> 0) ou para trás (velocidade <0)
   m_eye += forward * speed;
   m_at += forward * speed;
 
@@ -25,13 +25,13 @@ void Camera::dolly(float speed) {
 }
 
 void Camera::truck(float speed) {
-  // Compute forward vector (view direction)
+  // Calcular vetor direto (direção da vista)
   glm::vec3 forward{glm::normalize(m_at - m_eye)};
   forward.y = 0;
-  // Compute vector to the left
+  // Calcule o vetor à esquerda
   const glm::vec3 left{glm::cross(m_up, forward)};
 
-  // Move eye and center to the left (speed < 0) or to the right (speed > 0)
+  // Mova o observador e o centro para a esquerda (velocidade <0) ou para a direita (velocidade> 0)
   m_at -= left * speed;
   m_eye -= left * speed;
 
@@ -42,7 +42,7 @@ void Camera::pan(float speed, int direction) {
   glm::mat4 transform{glm::mat4(1.0f)};
   glm::vec3 axis;
 
-  // Rotate camera around its local y axis
+  // Girar a câmera em torno de seu eixo y local
   if(direction){
     axis = glm::cross(glm::vec3(m_at.x-m_eye.x, 0, m_at.z-m_eye.z), glm::vec3(0,1,0));
   }else{
