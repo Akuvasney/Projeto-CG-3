@@ -189,7 +189,7 @@ void OpenGLWindow::paintGL() {
   render_model(&m_tv, 180.0f, glm::vec3(0,1,0), glm::vec3(0.0f, 0.4f, -0.5f), 0.4f);
 
   // Desenhando lustre
-  render_model(&m_chandelier, 0.0f, glm::vec3(1,0,0), glm::vec3(0.0f, 2.5f, 0.0f), 0.7f);
+  render_model(&m_chandelier, 0.0f, glm::vec3(1,0,0), glm::vec3(0.0f, 2.7f, 0.0f), 0.6f);
 
   // Desenhando figura humana
   render_model(&m_slender, 0.0f, glm::vec3(1,0,0), glm::vec3(0.0f, 0.93f, -1.1f), 1.0f);
