@@ -83,6 +83,7 @@ void OpenGLWindow::restart() {
   m_tv.initializeGL(m_program, getAssetsPath() + "models/tv.obj", getAssetsPath() + "maps/tv.jpg");
   m_chandelier.initializeGL(m_program, getAssetsPath() + "models/chandelier.obj", getAssetsPath() + "maps/chandelier.jpg");
   m_slender.initializeGL(m_program, getAssetsPath() + "models/slenderman.obj", getAssetsPath() + "maps/slenderman.jpg");
+  m_interr.initializeGL(m_program, getAssetsPath() + "models/interruptor.obj", getAssetsPath() + "maps/interruptor.jpg");
 
 }
 
@@ -116,6 +117,7 @@ void OpenGLWindow::initializeGL() {
   m_tv.initializeGL(m_program, getAssetsPath() + "models/tv.obj", getAssetsPath() + "maps/tv.jpg");
   m_chandelier.initializeGL(m_program, getAssetsPath() + "models/chandelier.obj", getAssetsPath() + "maps/chandelier.jpg");
   m_slender.initializeGL(m_program, getAssetsPath() + "models/slenderman.obj", getAssetsPath() + "maps/slenderman.jpg");
+  m_interr.initializeGL(m_program, getAssetsPath() + "models/interruptor.obj", getAssetsPath() + "maps/interruptor.jpg");
 }
 
 void OpenGLWindow::paintGL() {
@@ -194,6 +196,8 @@ void OpenGLWindow::paintGL() {
   // Desenhando figura humana
   render_model(&m_slender, 0.0f, glm::vec3(1,0,0), glm::vec3(0.0f, 0.93f, -1.1f), 1.0f);
 
+  // Desenhando interruptor
+  render_model(&m_interr, -90.0f, glm::vec3(1,0,0), glm::vec3(0.0f, 0.5f, 1.89999999f), 0.1f);
   abcg::glUseProgram(0);
 
   update();
@@ -253,6 +257,7 @@ void OpenGLWindow::terminateGL() {
   m_tv.terminateGL();
   m_chandelier.terminateGL();
   m_slender.terminateGL();
+  m_interr.terminateGL();
 
   abcg::glDeleteProgram(m_program);
 }
