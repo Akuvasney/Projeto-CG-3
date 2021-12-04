@@ -172,7 +172,7 @@ void OpenGLWindow::paintGL() {
   render_model(&m_tv, 180.0f, glm::vec3(0,1,0), glm::vec3(0.0f, 0.4f, -0.5f), 0.4f);
 
   // Desenhando lustre
-  render_model(&m_chandelier, 0.0f, glm::vec3(1,0,0), glm::vec3(0.0f, 2.7f, 0.0f), 0.6f);
+  render_model(&m_chandelier, 0.0f, glm::vec3(1,0,0), glm::vec3(0.0f, 2.7f, 0.0f), 0.6f, true);
 
   // Desenhando figura humana
   render_model(&m_slender, 0.0f, glm::vec3(1,0,0), glm::vec3(0.0f, 0.93f, -1.1f), 1.0f);
@@ -271,7 +271,16 @@ void OpenGLWindow::update() {
 }
 
 //Renderiza um modelo
-void OpenGLWindow::render_model(Model *item, float angle, glm::vec3 axis, glm::vec3 position, float scale_size){
+void OpenGLWindow::render_model(Model *item, float angle, glm::vec3 axis, glm::vec3 position, float scale_size, bool lamp){
+  
+  //Uso de vetor para definir iluminação da lampada (que deve estar iluminada olhando de baixo para cima se estiver acesa)
+  glm::vec4 usedLight;
+
+  if(lamp && m_on){
+    usedLight = glm::vec4{m_lightDir.x, 1.0f, m_lightDir.z, 0.0f};
+  }else{
+    usedLight = glm::vec4{m_lightDir.x, m_lightDir.y, m_lightDir.z, 0.0f};
+  }
   item->m_position = position;
 
   glm::mat4 model{1.0f};
@@ -285,7 +294,7 @@ void OpenGLWindow::render_model(Model *item, float angle, glm::vec3 axis, glm::v
   glUniform1i(m_mappingModeLoc, 3);  // mesh
   glUniform4f(m_colorLoc, 1.0f, 0.25f, 0.25f, 1.0f);
 
-  glUniform4fv(m_lightDirLoc, 1, &m_lightDir.x);
+  glUniform4fv(m_lightDirLoc, 1, &usedLight.x);
   glUniform4fv(m_IaLoc, 1, &m_Ia.x);
   glUniform4fv(m_IdLoc, 1, &m_Id.x);
   glUniform4fv(m_IsLoc, 1, &m_Is.x);

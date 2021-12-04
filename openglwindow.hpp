@@ -21,7 +21,7 @@ class OpenGLWindow : public abcg::OpenGLWindow {
 
  private:
 
-  void render_model(Model *item, float angle, glm::vec3 axis, glm::vec3 position, float scale_size);
+  void render_model(Model *item, float angle, glm::vec3 axis, glm::vec3 position, float scale_size, bool lamp = false);
   void checkLight();
   GLuint m_program{};
 
