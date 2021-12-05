@@ -22,12 +22,13 @@ class Model {
 
   void initializeGL(GLuint program, std::string_view path, std::string_view diffuseTexture_path = "NULL");
   void loadDiffuseTexture(std::string_view path);
-  void loadFromFile(std::string_view path, GLuint program,  bool standardize = true);
+  void loadFromFile(std::string_view path, GLuint program);
   void render(int numTriangles = -1) const;
   void setupVAO(GLuint program);
   void terminateGL();
 
   glm::vec3 m_position{};
+  float m_scale;
   bool m_far{true};
   
   int getNumTriangles() const {

@@ -282,6 +282,7 @@ void OpenGLWindow::render_model(Model *item, float angle, glm::vec3 axis, glm::v
     usedLight = glm::vec4{m_lightDir.x, m_lightDir.y, m_lightDir.z, 0.0f};
   }
   item->m_position = position;
+  item->m_scale = scale_size;
 
   glm::mat4 model{1.0f};
   model = glm::translate(model, position);
@@ -320,9 +321,9 @@ void OpenGLWindow::checkLight() {
   //Percorre interruptores para checar se está proximo a algum deles
   for (Model* model : m_interruptors){
 
-    if(abs(m_camera.m_eye.x - model->m_position.x) > 0.25f || abs(m_camera.m_eye.z - model->m_position.z) > 0.25f){
+    if(!checkCollision_individual(model, m_camera.m_eye)){
       model->m_far = true;
-    }else if(abs(m_camera.m_eye.x - model->m_position.x) <= 0.25f || abs(m_camera.m_eye.z - model->m_position.z) <= 0.25f){
+    }else{
       if(model->m_far && m_on){
         m_on = false;
         model->m_far = false;
@@ -341,5 +342,37 @@ void OpenGLWindow::checkLight() {
       m_lightDir = glm::vec4(forward.x, -1.0f, forward.z, 0.0f);
   }else{
       m_lightDir = glm::vec4(0.0f, 0.0f, 0.0f, 0.0f);
+  }
+}
+
+bool OpenGLWindow::checkCollisions(glm::vec3 currentPos){
+  for (Model* model : m_collisions){
+    if(checkCollision_individual(model, currentPos)){
+      m_lightDir = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+      return true;
+    }
+  }
+  return false;
+}
+
+bool OpenGLWindow::checkCollision_individual(Model* model, glm::vec3 currentPos){
+    float profundidade = (model->m_max_z - model->m_min_z)*model->m_scale;
+    float comprimento = (model->m_max_x - model->m_min_x)*model->m_scale;
+
+    float pos_x = model->m_position.x + comprimento/2;
+    float neg_x = model->m_position.x - comprimento/2;
+
+    float pos_z = model->m_position.z + profundidade/2;
+    float neg_z = model->m_position.z - profundidade/2;
+
+    if(pos_z == neg_z){
+      pos_z = pos_z + 0.15f;
+      neg_z = neg_z - 0.15f;
+    }
+
+  if((currentPos.x > neg_x && currentPos.x < pos_x) && (currentPos.z > neg_z && currentPos.z < pos_z)) {
+    return true;
+  }else{
+    return false;
   }
 }

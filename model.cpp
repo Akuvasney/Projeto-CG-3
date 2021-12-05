@@ -95,7 +95,7 @@ void Model::loadDiffuseTexture(std::string_view path) {
   m_diffuseTexture = abcg::opengl::loadTexture(path);
 }
 
-void Model::loadFromFile(std::string_view path, GLuint program, bool standardize) {
+void Model::loadFromFile(std::string_view path, GLuint program) {
   auto basePath{std::filesystem::path{path}.parent_path().string() + "/"};
 
   tinyobj::ObjReaderConfig readerConfig;
@@ -195,9 +195,9 @@ void Model::loadFromFile(std::string_view path, GLuint program, bool standardize
     m_shininess = 35.0f;
   }
 
-  if (standardize) {
-    this->standardize();
-  }
+
+  this->standardize();
+
 
   if (!m_hasNormals) {
     computeNormals();
@@ -285,5 +285,9 @@ void Model::standardize() {
   const auto scaling{2.0f / glm::length(max - min)};
   for (auto& vertex : m_vertices) {
     vertex.position = (vertex.position - center) * scaling;
+    m_max_x = (max.x - center.x) * scaling;
+    m_max_z = (max.z - center.z) * scaling;
+    m_min_x = (min.x - center.x) * scaling;
+    m_min_z = (min.z - center.z) * scaling;
   }
 }
