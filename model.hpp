@@ -27,6 +27,11 @@ class Model {
   void setupVAO(GLuint program);
   void terminateGL();
 
+  float m_max_x;
+  float m_max_z;
+  float m_min_x;
+  float m_min_z;
+
   glm::vec3 m_position{};
   float m_scale;
   bool m_far{true};
