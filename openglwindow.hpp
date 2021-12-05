@@ -81,7 +81,7 @@ class OpenGLWindow : public abcg::OpenGLWindow {
   glm::mat4 m_projMatrix{1.0f};
 
   //lista de interruptores
-  std::list<Model*> m_collisions {&m_table, &m_frontwall};
+  std::list<Model*> m_collisions {&m_table, &m_tv, &m_escr1, &m_escr2, &m_couch, &m_slender};
   std::list<Model*> m_interruptors {&m_interr1, &m_interr2};
 
   // Propriedades da luz e materiais:

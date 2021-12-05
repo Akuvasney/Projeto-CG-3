@@ -265,10 +265,40 @@ void OpenGLWindow::update() {
   const float deltaTime{static_cast<float>(getDeltaTime())};
 
   // Atualiza a camera
-  m_camera.dolly(m_modSpeed * m_dollySpeed * deltaTime);
-  m_camera.truck(m_modSpeed * m_truckSpeed * deltaTime);
+  glm::vec3 forward{glm::normalize(m_camera.m_at - m_camera.m_eye)};
+  forward.y = 0;
+  glm::vec3 left{glm::cross(m_camera.m_up, forward)};
+  glm::vec3 nextPos;
+
+  int mult;
+
+
+  if(m_dollySpeed != 0.0f){
+
+    if(signbit(m_dollySpeed)){
+      mult = -1;
+    }else{
+      mult = 1;
+    }
+    nextPos = m_camera.m_eye + 0.1f * mult * forward;
+    if (!checkCollisions(nextPos)){
+      m_camera.dolly(m_modSpeed * m_dollySpeed * deltaTime);
+    }
+  }
+
+  if(m_truckSpeed != 0.0f){
+
+    if(signbit(m_truckSpeed)){
+      mult = -1;
+    }else{
+      mult = 1;
+    }
+    nextPos = m_camera.m_eye - 0.1f * mult * left;
+    if (!checkCollisions(nextPos)){
+      m_camera.truck(m_modSpeed * m_truckSpeed * deltaTime);
+    }
+  }
   checkLight();
-  checkCollisions(m_camera.m_eye);
 }
 
 //Renderiza um modelo
@@ -349,7 +379,6 @@ void OpenGLWindow::checkLight() {
 bool OpenGLWindow::checkCollisions(glm::vec3 currentPos){
   for (Model* model : m_collisions){
     if(checkCollision_individual(model, currentPos)){
-      m_lightDir = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
       return true;
     }
   }
