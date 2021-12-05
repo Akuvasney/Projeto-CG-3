@@ -268,6 +268,7 @@ void OpenGLWindow::update() {
   m_camera.dolly(m_modSpeed * m_dollySpeed * deltaTime);
   m_camera.truck(m_modSpeed * m_truckSpeed * deltaTime);
   checkLight();
+  checkCollisions(m_camera.m_eye);
 }
 
 //Renderiza um modelo
@@ -359,16 +360,11 @@ bool OpenGLWindow::checkCollision_individual(Model* model, glm::vec3 currentPos)
     float profundidade = (model->m_max_z - model->m_min_z)*model->m_scale;
     float comprimento = (model->m_max_x - model->m_min_x)*model->m_scale;
 
-    float pos_x = model->m_position.x + comprimento/2;
-    float neg_x = model->m_position.x - comprimento/2;
+    float pos_x = model->m_position.x + comprimento/2 + 0.175f;
+    float neg_x = model->m_position.x - comprimento/2 - 0.175f;
 
-    float pos_z = model->m_position.z + profundidade/2;
-    float neg_z = model->m_position.z - profundidade/2;
-
-    if(pos_z == neg_z){
-      pos_z = pos_z + 0.15f;
-      neg_z = neg_z - 0.15f;
-    }
+    float pos_z = model->m_position.z + profundidade/2 + 0.175f;
+    float neg_z = model->m_position.z - profundidade/2 - 0.175f;
 
   if((currentPos.x > neg_x && currentPos.x < pos_x) && (currentPos.z > neg_z && currentPos.z < pos_z)) {
     return true;
