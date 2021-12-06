@@ -33,6 +33,7 @@ class Model {
   float m_min_z;
 
   glm::vec3 m_position{};
+  glm::vec3 m_rotation_axis{};
   float m_scale;
   bool m_far{true};
   

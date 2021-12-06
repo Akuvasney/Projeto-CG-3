@@ -314,6 +314,7 @@ void OpenGLWindow::render_model(Model *item, float angle, glm::vec3 axis, glm::v
   }
   item->m_position = position;
   item->m_scale = scale_size;
+  item->m_rotation_axis = axis;
 
   glm::mat4 model{1.0f};
   model = glm::translate(model, position);
@@ -352,7 +353,7 @@ void OpenGLWindow::checkLight() {
   //Percorre interruptores para checar se está proximo a algum deles
   for (Model* model : m_interruptors){
 
-    if(!checkCollision_individual(model, m_camera.m_eye)){
+    if(!checkCollision_individual(model, m_camera.m_eye, 0.3f)){
       model->m_far = true;
     }else{
       if(model->m_far && m_on){
@@ -385,17 +386,28 @@ bool OpenGLWindow::checkCollisions(glm::vec3 currentPos){
   return false;
 }
 
-bool OpenGLWindow::checkCollision_individual(Model* model, glm::vec3 currentPos){
-    float profundidade = (model->m_max_z - model->m_min_z)*model->m_scale;
-    float comprimento = (model->m_max_x - model->m_min_x)*model->m_scale;
+bool OpenGLWindow::checkCollision_individual(Model* model, glm::vec3 currentPos, float offset){
 
-    float pos_x = model->m_position.x + comprimento/2 + 0.175f;
-    float neg_x = model->m_position.x - comprimento/2 - 0.175f;
+  float profundidade;
+  float comprimento;
+  if(model->m_rotation_axis == glm::vec3(0,1,0)){
+    profundidade = (model->m_max_x - model->m_min_x)*model->m_scale;
+    comprimento = (model->m_max_z - model->m_min_z)*model->m_scale;
+  }else{
+    profundidade = (model->m_max_z - model->m_min_z)*model->m_scale;
+    comprimento = (model->m_max_x - model->m_min_x)*model->m_scale;
+  }
 
-    float pos_z = model->m_position.z + profundidade/2 + 0.175f;
-    float neg_z = model->m_position.z - profundidade/2 - 0.175f;
+  float pos_x = model->m_position.x + comprimento/2 + offset;
+  float neg_x = model->m_position.x - comprimento/2 - offset;
 
-  if((currentPos.x > neg_x && currentPos.x < pos_x) && (currentPos.z > neg_z && currentPos.z < pos_z)) {
+  float pos_z = model->m_position.z + profundidade/2 + offset;
+  float neg_z = model->m_position.z - profundidade/2 - offset;
+
+  glm::vec4 max = glm::vec4(pos_x, model->m_position.y, pos_z, 1.0f);
+  glm::vec4 min = glm::vec4(neg_x, model->m_position.y, neg_z, 1.0f);
+
+  if((currentPos.x > min.x && currentPos.x < max.x) && (currentPos.z > min.z && currentPos.z < max.z)) {
     return true;
   }else{
     return false;

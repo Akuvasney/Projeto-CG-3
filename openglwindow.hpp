@@ -23,7 +23,7 @@ class OpenGLWindow : public abcg::OpenGLWindow {
 
   void render_model(Model *item, float angle, glm::vec3 axis, glm::vec3 position, float scale_size, bool lamp = false);
   void checkLight();
-  bool checkCollision_individual(Model* model, glm::vec3 currentPos);
+  bool checkCollision_individual(Model* model, glm::vec3 currentPos, float offset = 0.175f);
   bool checkCollisions(glm::vec3 currentPos);
   GLuint m_program{};
 
@@ -81,7 +81,8 @@ class OpenGLWindow : public abcg::OpenGLWindow {
   glm::mat4 m_projMatrix{1.0f};
 
   //lista de interruptores
-  std::list<Model*> m_collisions {&m_table, &m_tv, &m_escr1, &m_escr2, &m_couch, &m_slender};
+  std::list<Model*> m_collisions {&m_table, &m_tv, &m_escr1, &m_escr2, &m_couch, &m_slender,
+                                  &m_frontwall, &m_backwall, &m_rightwall, &m_leftwall};
   std::list<Model*> m_interruptors {&m_interr1, &m_interr2};
 
   // Propriedades da luz e materiais:
