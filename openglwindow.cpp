@@ -397,8 +397,8 @@ bool OpenGLWindow::checkCollision_individual(Model* model, glm::vec3 currentPos,
   float comprimento;
 
   //Para nosso caso, onde só há rotações no eixo Y a 90 graus, a seguinte solução
-  //Satisfaz as necessidades e permite q criação de limites para colisão. No entanto, o ideal seria
-  //Rotacionar os pontos calculados abaixo para compreender também objetos rotacionados no eixo Y
+  //Satisfaz as necessidades e permite a criação de limites para colisão. No entanto, o ideal seria
+  //Rotacionar os pontos calculados mais abaixo para compreender também objetos rotacionados no eixo Y
   //A angulos diferentes de 90 graus.
   if(model->m_rotation_axis == glm::vec3(0,1,0) && abs(model->m_angle) == 90.0f){
     profundidade = (model->m_max_x - model->m_min_x)*model->m_scale;
