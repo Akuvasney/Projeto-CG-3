@@ -137,16 +137,16 @@ void OpenGLWindow::paintGL() {
   render_model(&m_ground, -90.0f, glm::vec3(1,0,0), glm::vec3(0.0f, 0.0f, 0.0f), 2.8f);
 
   // Desenhando sofá
-  render_model(&m_couch, 270.0f, glm::vec3(1,0,0), glm::vec3(0.0f, 0.2f, -1.65f), 0.56f);
+  render_model(&m_couch, -90.0f, glm::vec3(1,0,0), glm::vec3(0.0f, 0.2f, -1.65f), 0.56f);
 
   // Desenhando lampadas
-  render_model(&m_lamp1, 270.0f, glm::vec3(1, 0, 0), glm::vec3(1.8f, 0.35f, -1.8f), 0.35f);
-  render_model(&m_lamp2, 270.0f, glm::vec3(1, 0, 0), glm::vec3(-1.8f, 0.35f, -1.8f), 0.35f);
-  render_model(&m_lamp3, 270.0f, glm::vec3(1, 0, 0), glm::vec3(1.8f, 0.35f, 1.8f), 0.35f);
-  render_model(&m_lamp4, 270.0f, glm::vec3(1, 0, 0), glm::vec3(-1.8f, 0.35f, 1.8f), 0.35f);
+  render_model(&m_lamp1, -90.0f, glm::vec3(1, 0, 0), glm::vec3(1.8f, 0.35f, -1.8f), 0.35f);
+  render_model(&m_lamp2, -90.0f, glm::vec3(1, 0, 0), glm::vec3(-1.8f, 0.35f, -1.8f), 0.35f);
+  render_model(&m_lamp3, -90.0f, glm::vec3(1, 0, 0), glm::vec3(1.8f, 0.35f, 1.8f), 0.35f);
+  render_model(&m_lamp4, -90.0f, glm::vec3(1, 0, 0), glm::vec3(-1.8f, 0.35f, 1.8f), 0.35f);
 
   // Desenhando tapete
-  render_model(&m_rug, 270.0f, glm::vec3(1, 0, 0), glm::vec3(0.0f, 0.0f, -1.2f), 0.9f);
+  render_model(&m_rug, -90.0f, glm::vec3(1, 0, 0), glm::vec3(0.0f, 0.0f, -1.2f), 0.9f);
 
   // Desenhando paredes
   render_model(&m_backwall, 0.0f, glm::vec3(1,0,0), glm::vec3(0.0f, 1.0f, -1.9f), 2.8f);
@@ -315,6 +315,7 @@ void OpenGLWindow::render_model(Model *item, float angle, glm::vec3 axis, glm::v
   item->m_position = position;
   item->m_scale = scale_size;
   item->m_rotation_axis = axis;
+  item->m_angle = angle;
 
   glm::mat4 model{1.0f};
   model = glm::translate(model, position);
@@ -390,7 +391,7 @@ bool OpenGLWindow::checkCollision_individual(Model* model, glm::vec3 currentPos,
 
   float profundidade;
   float comprimento;
-  if(model->m_rotation_axis == glm::vec3(0,1,0)){
+  if(model->m_rotation_axis == glm::vec3(0,1,0) && abs(model->m_angle) == 90.0f){
     profundidade = (model->m_max_x - model->m_min_x)*model->m_scale;
     comprimento = (model->m_max_z - model->m_min_z)*model->m_scale;
   }else{

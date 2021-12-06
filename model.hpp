@@ -34,6 +34,7 @@ class Model {
 
   glm::vec3 m_position{};
   glm::vec3 m_rotation_axis{};
+  float m_angle;
   float m_scale;
   bool m_far{true};
   
