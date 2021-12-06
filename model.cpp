@@ -267,7 +267,7 @@ void Model::setupVAO(GLuint program) {
 }
 
 void Model::standardize() {
-  // Centralize para originar e normalizar o maior limite para [-1, 1]
+  // Centraliza para originar e normalizar o maior limite para [-1, 1]
 
   glm::vec3 max(std::numeric_limits<float>::lowest());
   glm::vec3 min(std::numeric_limits<float>::max());
@@ -280,7 +280,7 @@ void Model::standardize() {
     min.z = std::min(min.z, vertex.position.z);
   }
 
-  // Centro e escala
+  // Centraliza e escala, além de armazenar os valores máximos/mínimos das componentes
   const auto center{(min + max) / 2.0f};
   const auto scaling{2.0f / glm::length(max - min)};
   for (auto& vertex : m_vertices) {

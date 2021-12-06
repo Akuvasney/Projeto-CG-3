@@ -312,6 +312,8 @@ void OpenGLWindow::render_model(Model *item, float angle, glm::vec3 axis, glm::v
   }else{
     usedLight = glm::vec4{m_lightDir.x, m_lightDir.y, m_lightDir.z, 0.0f};
   }
+
+  //Captura informações importantes para checagem de colisão
   item->m_position = position;
   item->m_scale = scale_size;
   item->m_rotation_axis = axis;
@@ -378,6 +380,7 @@ void OpenGLWindow::checkLight() {
   }
 }
 
+//Percorre itens colidiveis e checa se há colisão
 bool OpenGLWindow::checkCollisions(glm::vec3 currentPos){
   for (Model* model : m_collisions){
     if(checkCollision_individual(model, currentPos)){
@@ -387,10 +390,16 @@ bool OpenGLWindow::checkCollisions(glm::vec3 currentPos){
   return false;
 }
 
+//Checa se há colisão com um item
 bool OpenGLWindow::checkCollision_individual(Model* model, glm::vec3 currentPos, float offset){
 
   float profundidade;
   float comprimento;
+
+  //Para nosso caso, onde só há rotações no eixo Y a 90 graus, a seguinte solução
+  //Satisfaz as necessidades e permite q criação de limites para colisão. No entanto, o ideal seria
+  //Rotacionar os pontos calculados abaixo para compreender também objetos rotacionados no eixo Y
+  //A angulos diferentes de 90 graus.
   if(model->m_rotation_axis == glm::vec3(0,1,0) && abs(model->m_angle) == 90.0f){
     profundidade = (model->m_max_x - model->m_min_x)*model->m_scale;
     comprimento = (model->m_max_z - model->m_min_z)*model->m_scale;
@@ -399,15 +408,17 @@ bool OpenGLWindow::checkCollision_individual(Model* model, glm::vec3 currentPos,
     comprimento = (model->m_max_x - model->m_min_x)*model->m_scale;
   }
 
+  //Calcula coordenadas maximas/minimas em x e em z (como não há variação de altura da câmera, não calculamos a componente Y desses pontos)
   float pos_x = model->m_position.x + comprimento/2 + offset;
   float neg_x = model->m_position.x - comprimento/2 - offset;
 
   float pos_z = model->m_position.z + profundidade/2 + offset;
   float neg_z = model->m_position.z - profundidade/2 - offset;
 
-  glm::vec4 max = glm::vec4(pos_x, model->m_position.y, pos_z, 1.0f);
-  glm::vec4 min = glm::vec4(neg_x, model->m_position.y, neg_z, 1.0f);
+  glm::vec3 max = glm::vec3(pos_x, model->m_position.y, pos_z);
+  glm::vec3 min = glm::vec3(neg_x, model->m_position.y, neg_z);
 
+  //Verifica existência de colisão
   if((currentPos.x > min.x && currentPos.x < max.x) && (currentPos.z > min.z && currentPos.z < max.z)) {
     return true;
   }else{
