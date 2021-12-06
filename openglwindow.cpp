@@ -354,7 +354,7 @@ void OpenGLWindow::checkLight() {
   //Percorre interruptores para checar se está proximo a algum deles
   for (Model* model : m_interruptors){
 
-    if(!checkCollision_individual(model, m_camera.m_eye, 0.3f)){
+    if(!checkCollision_individual(model, m_camera.m_eye, 0.2f)){
       model->m_far = true;
     }else{
       if(model->m_far && m_on){
