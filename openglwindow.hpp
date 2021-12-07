@@ -51,9 +51,7 @@ class OpenGLWindow : public abcg::OpenGLWindow {
   Camera m_camera;
   float m_dollySpeed{0.0f};
   float m_truckSpeed{0.0f};
-  float m_panSpeed{0.0f};
   float m_modSpeed{1.0f};
-  glm::vec3 m_last_mouse_position{0,0,0};
 
   Model m_ground;
   Model m_roof;
@@ -77,8 +75,6 @@ class OpenGLWindow : public abcg::OpenGLWindow {
   Model m_chandelier;
   Model m_interr1;
   Model m_interr2;
-  glm::mat4 m_viewMatrix{1.0f};
-  glm::mat4 m_projMatrix{1.0f};
 
   //lista de interruptores
   std::list<Model*> m_collisions {&m_table, &m_tv, &m_escr1, &m_escr2, &m_couch, &m_slender,
